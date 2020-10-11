@@ -1,0 +1,1 @@
+# EquipmentsManager
