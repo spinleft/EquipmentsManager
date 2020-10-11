@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    
+    server_name localhost;
+    charset utf-8;
+    root /usr/share/nginx/EquipmentsManager/Flask;
+    client_max_body_size 75M;
+    
+    location / { 
+ 
+        include uwsgi_params;
+        uwsgi_pass 127.0.0.1:5050;
+        uwsgi_param UWSGI_PYTHON /usr/bin/python3;
+        uwsgi_param UWSGI_CHDIR /usr/share/nginx/EquipmentsManager/Flask;
+        uwsgi_param UWSGI_SCRIPT run:app;
+    }   
+}
