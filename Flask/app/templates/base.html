@@ -1,0 +1,17 @@
+<html>
+
+<head>
+    {% if title %}
+    <title>{{title}} - 设备材料管理系统</title>
+    {% else %}
+    <title>设备材料管理系统</title>
+    {% endif %}
+</head>
+
+<body>
+    <div>设备材料管理系统: <a href="/index">首页</a></div>
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+
+</html>
