@@ -10,9 +10,9 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 db = pymysql.connect(
-    host="192.168.1.138",
+    host="localhost",
     user="root",
-    password = "fermi123456",
+    password = "19991029",
     database="equipments",
     charset="utf8")
 
