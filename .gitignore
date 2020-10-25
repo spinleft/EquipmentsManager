@@ -1,3 +1,4 @@
 Flask/flask/
+Flask/static/upload/
 *.pyc
 Flask/__pycache__/
