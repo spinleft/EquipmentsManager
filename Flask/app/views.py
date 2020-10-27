@@ -7,6 +7,7 @@ import pymysql
 from app import app, db
 from config import basedir
 import os
+import shutil
 
 
 @app.route('/')
@@ -23,7 +24,6 @@ def info():
     cursor = db.cursor()
     filter = {}
     if request.method == 'POST':
-        print(request.form)
         op = request.form['提交']
         if op == '筛选':
             columns = ['类型', '名称', '型号', '序列号', '合同号', '到货时间', '经办人', '状态', '存放位置']
@@ -43,10 +43,10 @@ def info():
             records = cursor.fetchall()
         elif op == '插入':
             new_form = fixform(request.form)
-            if request.files['合同文件1']:
+            if '合同文件1' in request.files:
                 new_form['合同文件'] = ""
                 i = 1
-                while request.files['合同文件' + str(i)]:
+                while '合同文件' + str(i) in request.files:
                     f = request.files['合同文件' + str(i)]
                     upload_path = os.path.join(
                         basedir, 'app/static/uploads',
@@ -101,12 +101,31 @@ def info():
             db.commit()
             cursor.execute("select * from `详情`")
             records = cursor.fetchall()
+        elif op == '删除':
+            cursor.execute("delete from `详情` where `名称`=%s and `型号`=%s and `序列号`=%s",
+                        [request.form['名称'], request.form['型号'], request.form['序列号']])
+            db.commit()
+            print(request.form)
+            if request.form['删除文件'] == 'true':
+                dir_path = os.path.join(basedir,
+                    'app/static/uploads', request.form['名称'] + '-' + request.form['型号'] + '-' + request.form['序列号'])
+                print(dir_path)
+                if os.path.exists(dir_path):
+                    print("removing" + dir_path)
+                    shutil.rmtree(dir_path)
+            cursor.execute("select * from `详情`")
+            records = cursor.fetchall()
     else:
         cursor.execute("select * from `详情`")
         records = cursor.fetchall()
+    records = list(records)
+    i = 0
     for record in records:
-        if record[9]:
+        record = list(record)
+        if record[9] and record[9] != 'None':
             record[9] = record[9].split(";")
+        records[i] = record
+        i += 1
     return render_template("info.html",
                         title='详细信息',
                         records=records,

@@ -53,7 +53,11 @@ th {
     text-align: center;
 }
 .info-photo {
-    width: 6em;
+    width: 5em;
+    text-align: center;
+}
+.info-location-photo {
+    width: 5em;
     text-align: center;
 }
 .info-comment {
@@ -67,15 +71,13 @@ th {
 }
 .form-group {
     display: inline-block;
+    margin: 1px;
 }
 .form-operation {
     vertical-align: sub;
 }
 select, input {
     height: 2em;
-}
-.form-group {
-    margin: 1px;
 }
 #select-name, #insert-name {
     width: 10em;

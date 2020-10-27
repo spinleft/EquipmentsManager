@@ -184,22 +184,77 @@
             <td class="info-manager">{{ record[6] }}</td>
             <td class="info-status">{{ record[7] }}</td>
             <td class="info-location">{{ record[8] }}</td>
-            <td class="info-contract-file">
+            <td class="info-contract-file" id="contract-file-{{ loop.index }}">
                 {% if record[9] %}
                 {% for file in record[9] %}
                 {% if file != 'None' and file != '' %}
-                <a href="static/upload/{{ record[1] + '-' + record[2] + '-' + record[3] + '/' + file }}">{{ file }}</a>
+                <a href="static/uploads/{{ record[1] + '-' + record[2] + '-' + record[3] + '/' + file }}">{{ file }}</a>
                 {% endif %}
                 {% endfor %}
                 {% else %}
-                无
+                None
                 {% endif %}
             </td>
-            <td class="info-photo">{{ record[10] }}</th>
-            <td class="info-location-photo">{{ record[11] }}</td>
-            <td class="info-comment">{{ record[12] }}</th>
+            <td class="info-photo" id="photo-{{ loop.index }}">{{ record[10] }}</td>
+            <td class="info-location-photo" id="location-photo-{{ loop.index }}">{{ record[11] }}</td>
+            <td class="info-comment">{{ record[12] }}</td>
             <td class="info-operation">
-                <button onclick="deleteRecord('{{ record[1] }}', '{{ record[2] }}', '{{ record[3] }}')">删除</button>
+                <form action="/info" enctype="multipart/form-data" method="POST"
+                 id="delete-{{ loop.index }}" 
+                 onsubmit="return deleteRecord('{{ loop.index }}', '{{ record[1] }}', '{{ record[2] }}', '{{ record[3] }}')">
+                    <input type="hidden" name="名称" value="{{ record[1] }}">
+                    <input type="hidden" name="型号" value="{{ record[2] }}">
+                    <input type="hidden" name="序列号" value="{{ record[3] }}">
+                    <input type="hidden" name="删除文件" value="true" id="delete-file-{{ loop.index }}">
+                    <input type="submit" name="提交" value="删除">
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="15">
+                <form action="/info" enctype="multipart/form-data" method="POST">
+                    <div class="form-group">
+                        <label for="update-type-{{ loop.index }}">类型</label>
+                        <br>
+                        <select name="类型" id="update-type-{{ loop.index }}">
+                            {% if record[0] == '材料' %}
+                            <option value="材料" selected="selected">材料</option>
+                            <option value="设备">设备</option>
+                            {% else %}
+                            <option value="材料">材料</option>
+                            <option value="设备" selected="selected">设备</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="update-name-{{ loop.index }}">名称</label>
+                        <br>
+                        <input type="text" name="名称" value="{{ record[1] }}" id="update-name-{{ loop.index }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="update-model-{{ loop.index }}">型号</label>
+                        <br>
+                        <input type="text" name="型号" value="{{ record[2] }}" id="update-model-{{ loop.index }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="update-id-{{ loop.index }}">序列号</label>
+                        <br>
+                        <input type="text" name="序列号" value="{{ record[3] }}" id="update-id-{{ loop.index }}" required>
+                    </div>
+                    <div class="form-group form-contract-id">
+                        <label for="insert-contract-id">合同号</label><br>
+                        <input type="text" name="合同号" id="insert-contract-id">
+                    </div>
+                    <div class="form-group form-date">
+                        <label for="insert-date">到货时间</label>
+                        <br>
+                        <input type="date" name="到货时间" id="insert-date"></div>
+                    <div class="form-group form-manager">
+                        <label for="insert-manager">经办人</label>
+                        <br>
+                        <input type="text" name="经办人" id="insert-manager">
+                    </div>
+                </form>
             </td>
         </tr>
         {% endfor %}
