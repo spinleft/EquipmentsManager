@@ -1,0 +1,306 @@
+html {
+    font-size  : 16px;
+    font-family: sans-serif;
+    background : #eee;
+}
+
+body {
+    max-width : auto;
+    margin    : 0 auto;
+    background: white;
+}
+
+.mgrheader {
+    position  : fixed;
+    height    : 48px;
+    width     : 100%;
+    min-width : 1000px;
+    overflow  : auto;
+    top       : 0;
+    z-index   : 100;
+    background: lightgray;
+}
+
+.mgrlogo {
+    position       : relative;
+    display        : block;
+    float          : left;
+    height         : 48px;
+    font-size      : 32px;
+    margin         : 0 16px;
+    text-decoration: none;
+}
+
+.mgrheader ul {
+    display        : block;
+    width          : auto;
+    list-style-type: none;
+    white-space    : nowrap;
+    margin         : 0;
+    padding        : 0;
+}
+
+.mgrheader-tabs {
+    float: left;
+}
+
+.mgrheader-log {
+    float: right;
+}
+
+.tabs-item {
+    float: left;
+    padding: 0 16px;
+}
+
+.log-item {
+    float: left;
+    padding: 0 12px;
+}
+
+.tabs-item,
+.log-item {
+    height  : 48px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tabs-link {
+    font-size: 24px;
+    padding  : 7px 0;
+}
+
+.log-link {
+    font-size: 16px;
+    padding  : 14px 0;
+}
+
+.tabs-link,
+.log-link {
+    text-decoration: none;
+    display        : block;
+    text-align     : center;
+}
+
+h1 {
+    font-family: serif;
+    color      : #377ba8;
+    margin     : 1rem 0;
+}
+
+a {
+    color: #377ba8;
+}
+
+hr {
+    border    : none;
+    border-top: 1px solid lightgray;
+}
+
+.content {
+    display   : block;
+    margin-top: 48px;
+    padding   : 0 1rem 1rem;
+}
+
+.pageheader {
+    border-bottom: 1px solid lightgray;
+    display      : flex;
+    align-items  : flex-end;
+}
+
+.flash {
+    margin    : 1em 0;
+    padding   : 1em;
+    background: #cae6f6;
+    border    : 1px solid #377ba8;
+}
+
+.info-select-form-item {
+    float: left;
+}
+
+.clear-left {
+    clear: left;
+}
+
+#info {
+    clear: both;
+}
+
+#info-table {
+    border-collapse: collapse;
+    margin-top: 32px;
+}
+
+#info-table td,
+#info-table th {
+    font-size : 16px;
+    text-align: center;
+    border    : 1px solid #0e3b9b;
+    padding   : 3px 7px 2px 7px;
+}
+
+#info-table th {
+    font-size       : 18px;
+    padding-top     : 5px;
+    padding-bottom  : 4px;
+    background-color: #2053b1;
+    color           : #ffffff;
+}
+
+#info-table tr.info-table-item-even td {
+    color           : #000000;
+    background-color: #459bec;
+}
+
+#info-table tr.info-table-item-odd td {
+    color           : #000000;
+    background-color: #82ade4;
+}
+
+.info-type {
+    min-width: 64px;
+}
+
+.info-name {
+    min-width: 160px;
+}
+
+.info-model {
+    min-width: 80px;
+}
+
+.info-serial-number {
+    min-width: 80px;
+}
+
+.info-contract-number {
+    min-width: 80px;
+}
+
+.info-arrival-date {
+    min-width: 80px;
+}
+
+.info-transactor {
+    min-width: 64px;
+}
+
+.info-status {
+    min-width: 64px;
+}
+
+.info-location {
+    min-width: 80px;
+}
+
+.info-link {
+    min-width: 48px;
+}
+
+.info-link a img {
+    height: 16px;
+}
+
+.details-item {
+    display: flex;
+    min-height: 32px;
+}
+
+.details-label {
+    display: block;
+    width: 128px;
+    height: 32px;
+    text-align: right;
+    font-size: 16px;
+    line-height: 32px;
+}
+
+.details-content {
+    display: block;
+    height: 32px;
+    text-align: left;
+    font-size: 16px;
+    line-height: 32px;
+}
+
+.details-form {
+    font-size: 16px;
+    height: fit-content;
+    display: none;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.button-delete {
+    color: red;
+}
+
+.details-show {
+    display: block;
+}
+
+.details-show-button {
+    display: inline;
+}
+
+.details-hide {
+    display: none;
+}
+
+.details-hide-button {
+    display: none;
+}
+
+.details-item img {
+    display: block;
+    height: 100px;
+}
+
+.count-table {
+    border-collapse: collapse;
+    margin-top: 32px;
+}
+
+.count-table td,
+.count-table th {
+    font-size : 16px;
+    text-align: center;
+    border    : 1px solid #0e3b9b;
+    padding   : 3px 7px 2px 7px;
+}
+
+.count-table th {
+    font-size       : 18px;
+    padding-top     : 5px;
+    padding-bottom  : 4px;
+    background-color: #2053b1;
+    color           : #ffffff;
+}
+
+.count-table tr.count-table-item-even td {
+    color           : #000000;
+    background-color: #459bec;
+}
+
+.count-table tr.count-table-item-odd td {
+    color           : #000000;
+    background-color: #82ade4;
+}
+
+.count-type {
+    min-width: 64px;
+}
+
+.count-name {
+    min-width: 160px;
+}
+
+.count-model {
+    min-width: 80px;
+}
+
+.count-amount {
+    min-width: 80px;
+}

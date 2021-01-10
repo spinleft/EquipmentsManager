@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}总览{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div id="info-operation">
+  <button class="button-delete" onclick="confirmMultiDelete()">批量删除</button>
+  <button id="button-info-export" onclick="confirmMultiExport()" value="{{ url_for('info.export') }}">批量导出</button>
+  <div id="info-select">
+    <form id="info-select-form" enctype="multipart/form-data" action="{{ url_for('index') }}" method="POST">
+      <div class="info-select-form-item">
+        <label for="select-type">类型</label>
+        <br>
+        <select id="select-type" name="type">
+          <option value="" selected="selected">所有</option>
+          <option value="材料">材料</option>
+          <option value="设备">设备</option>
+        </select>
+      </div>
+      <div class="info-select-form-item">
+        <label for="select-name">名称</label>
+        <br>
+        <input id="select-name" type="text" name="name" value="">
+      </div>
+      <div class="info-select-form-item">
+        <label for="select-model">型号</label>
+        <br>
+        <input id="select-model" type="text" name="model" value="">
+      </div>
+      <div class="info-select-form-item">
+        <label for="select-serial-number">序列号</label><br>
+        <input id="select-serial-number" type="text" name="serial_number" value="">
+      </div>
+      <div class="info-select-form-item">
+        <label for="select-contract-number">合同号</label>
+        <br>
+        <input id="select-contract-number" type="text" name="contract_number" value="">
+      </div>
+      <div class="info-select-form-item clear-left">
+        <label for="select-arrival-date-start">起始时间</label>
+        <br>
+        <input id="select-arrival-date-start" type="date" name="arrival_date_start" value="">
+      </div>
+      <div class="info-select-form-item">
+        <label for="select-arrival-date-end">终止时间</label>
+        <br>
+        <input id="select-arrival-date-end" type="date" name="arrival_date_end" value="">
+      </div>
+      <div class="info-select-form-item">
+        <label for="select-transactor">经办人</label>
+        <br>
+        <input id="select-transactor" type="text" name="transactor" value="">
+      </div>
+      <div class="info-select-form-item">
+        <label for="select-status">状态</label>
+        <br>
+        <select id="select-status" name="status">
+          <option value="" selected="selected">所有</option>
+          <option value="在用">在用</option>
+          <option value="待用">待用</option>
+          <option value="待维修">待维修</option>
+          <option value="维修中">维修中</option>
+          <option value="被借">被借</option>
+        </select>
+      </div>
+      <div class="info-select-form-item">
+        <label for="select-location">存放位置</label>
+        <br>
+        <input id="select-location" type="text" name="location" value="">
+    </div>
+    <div class="clear-left">
+      <input class="info-select-form-item" type="submit" name="submit" value="筛选"/>
+    </div>
+    </form>
+  </div>
+</div>
+<div id="info">
+  <form id="info-form" enctype="multipart/form-data" action="{{ url_for('info.multi_delete') }}" method="POST">
+    <table id="info-table">
+      <thead>
+        <tr class="info-table-col-sel">
+          <th class="info-row-sel">选择</th>
+          <th class="info-type">
+            <input class="info-select-col" type="checkbox" name="select_type" value="type" />
+          </th>
+          <th class="info-name">
+            <input class="info-select-col" type="checkbox" name="select_name" value="name" />
+          </th>
+          <th class="info-model">
+            <input class="info-select-col" type="checkbox" name="select_type" value="type" />
+          </th>
+          <th class="info-serial-number">
+            <input class="info-select-col" type="checkbox" name="select_serial_number" value="serial_number" />
+          </th>
+          <th class="info-contract-number">
+            <input class="info-select-col" type="checkbox" name="select_contract_number" value="contract_number" />
+          </th>
+          <th class="info-arrival-date">
+            <input class="info-select-col" type="checkbox" name="select_arrival_date" value="arrival_date" />
+          </th>
+          <th class="info-transactor">
+            <input class="info-select-col" type="checkbox" name="select_transactor" value="transactor" />
+          </th>
+          <th class="info-status">
+            <input class="info-select-col" type="checkbox" name="select_status" value="status" />
+          </th>
+          <th class="info-location">
+            <input class="info-select-col" type="checkbox" name="select_location" value="location" />
+          </th>
+          <th class="info-link">
+            <input id="info-select-all-cols" type="button" name="select_all_cols" value="全选"
+              onclick="selectAllCols()" />
+          </th>
+        </tr>
+        <tr class="info-table-head">
+          <th class="info-row-sel">
+            <input id="info-select-all-rows" type="button" name="select_all_rows" value="全选"
+              onclick="selectAllRows()" />
+          </th>
+          <th class="info-type" onclick="sortRows(1, 0)">类型</th>
+          <th class="info-name" onclick="sortRows(2, 0)">名称</th>
+          <th class="info-model" onclick="sortRows(3, 0)">型号</th>
+          <th class="info-serial-number" onclick="sortRows(4, 0)">序列号</th>
+          <th class="info-contract-number" onclick="sortRows(5, 0)">合同号</th>
+          <th class="info-arrival-date" onclick="sortRows(6, 0)">到货时间</th>
+          <th class="info-transactor" onclick="sortRows(7, 0)">经办人</th>
+          <th class="info-status" onclick="sortRows(8, 0)">状态</th>
+          <th class="info-location" onclick="sortRows(9, 0)">位置</th>
+          <th class="info-link">详情</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in records %}
+        {% if loop.index % 2 == 0 %}
+        <tr class="info-table-item-even">
+          {% else %}
+        <tr class="info-table-item-odd">
+          {% endif %}
+          <td class="info-row-sel">
+            <input class="info-select-row" type="checkbox" name="select_id_{{ record['id'] }}"
+              value="{{ record['id'] }}" />
+          </td>
+          <td class="info-type">{{ record['type'] }}</td>
+          <td class="info-name">{{ record['name'] }}</td>
+          <td class="info-model">{{ record['model'] }}</td>
+          <td class="info-serial-number">{{ record['serial_number'] }}</td>
+          <td class="info-contract-number">{{ record['contract_number'] }}</td>
+          <td class="info-arrival-date">{{ record['arrival_date'] }}</td>
+          <td class="info-transactor">{{ record['transactor'] }}</td>
+          <td class="info-status">{{ record['status'] }}</td>
+          <td class="info-location">{{ record['location'] }}</td>
+          <td class="info-link">
+            <a href="{{ url_for('info.details', id=record['id']) }}">
+              <img src="{{ url_for('static', filename='image/details.png') }}" />
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
+</div>
+{% endblock %}

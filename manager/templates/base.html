@@ -1,0 +1,53 @@
+<!doctype html>
+
+<head>
+  <title>{% block title %}{% endblock %} - 设备管理系统</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+
+<body onload="initPage()">
+  <header class="mgrheader">
+    <a class="mgrlogo" href="{{ url_for('index') }}">设备管理系统</a>
+    
+    <ul class="mgrheader-tabs">
+      <li class="tabs-item">
+        <a class="tabs-link" href="{{ url_for('index') }}">总览</a>
+      </li>
+      <li class="tabs-item">
+        <a class="tabs-link" href="{{ url_for('count.amount') }}">统计</a>
+      </li>
+      <li class="tabs-item">
+        <a class="tabs-link" href="{{ url_for('info.import_excel') }}">导入</a>
+      </li>
+    </ul>
+
+    <ul class="mgrheader-log">
+      {% if g.user %}
+        <li class="log-item">
+          <span class="log-link">{{ g.user['username'] }}</span>
+        </li>
+        <li class="log-item">
+          <a class="log-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+        </li>
+      {% else %}
+        <li class="log-item">
+          <a class="log-link" href="{{ url_for('auth.register') }}">Register</a>
+        </li>
+        <li class="log-item">
+          <a class="log-link" href="{{ url_for('auth.login') }}">Log In</a>
+        </li>
+      {% endif %}
+    </ul>
+  </header>
+
+  <div class="content">
+    <header class="pageheader">
+      {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </div>
+</body>

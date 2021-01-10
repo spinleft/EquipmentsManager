@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}统计{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div class="count">
+    <table class="count-table">
+      <tr class="count-table-head">
+        <th class="count-type">类型</th>
+        <th class="count-name">名称</th>
+        <th class="count-model">型号</th>
+        <th class="count-amount">数量</th>
+      </tr>
+      {% for record in records %}
+        {% if loop.index % 2 == 0 %}
+        <tr class="count-table-item-even">
+        {% else %}
+        <tr class="count-table-item-odd">
+        {% endif %}
+          <td class="count-type">{{ record['type'] }}</td>
+          <td class="count-name">{{ record['name'] }}</td>
+          <td class="count-model">{{ record['model'] }}</td>
+          <td class="count-amount">{{ record['amount'] }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>  
+{% endblock %}

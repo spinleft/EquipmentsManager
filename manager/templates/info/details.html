@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}详情{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form id="details" enctype="multipart/form-data" method="POST">
+  <div class="details-item">
+    <div class="details-label">类型：</div>
+    <span id="details-type" class="details-show details-content">{{ record['type'] }}</span>
+    <select id="details-type-select" class="details-hide details-form" name="type">
+      <option id="details-type-a" value="材料">材料</option>
+      <option id="details-type-b" value="设备">设备</option>
+    </select>
+  </div>
+  <div class="details-item">
+    <div class="details-label">名称：</div>
+    <span class="details-show details-content" display="block">{{ record['name'] }}</span>
+    <input class="details-hide details-form" type="text" name="name" value="{{ record['name'] }}" />
+  </div>
+  <div class="details-item">
+    <div class="details-label">型号：</div>
+    <span class="details-show details-content">{{ record['model'] }}</span>
+    <input class="details-hide details-form" type="text" name="model" value="{{ record['model'] }}" />
+  </div>
+  <div class="details-item">
+    <div class="details-label">序列号：</div>
+    <span class="details-show details-content">{{ record['serial_number'] }}</span>
+    <input class="details-hide details-form" type="text" name="serial_number" value="{{ record['serial_number'] }}" />
+  </div>
+  <div class="details-item">
+    <div class="details-label">合同号：</div>
+    <span class="details-show details-content">{{ record['contract_number'] }}</span>
+    <input class="details-hide details-form" type="text" name="contract_number" value="{{ record['contract_number'] }}" />
+  </div>
+  <div class="details-item">
+    <div class="details-label">到货日期：</div>
+    <span class="details-show details-content">{{ record['arrival_date'] }}</span>
+    <input class="details-hide details-form" type="date" name="arrival_date" value="{{ record['arrival_date'] }}" />
+  </div>
+  <div class="details-item">
+    <div class="details-label">经办人：</div>
+    <span class="details-show details-content">{{ record['transactor'] }}</span>
+    <input class="details-hide details-form" type="text" name="transactor" value="{{ record['transactor'] }}" />
+  </div>
+  <div class="details-item">
+    <div class="details-label">状态：</div>
+    <span id="details-status" class="details-show details-content">{{ record['status'] }}</span>
+    <select class="details-hide details-form" name="status">
+      <option id="details-status-a" value="在用">在用</option>
+      <option id="details-status-b" value="待用">待用</option>
+      <option id="details-status-c" value="被借">被借</option>
+      <option id="details-status-d" value="待维修">待维修</option>
+      <option id="details-status-e" value="维修中">维修中</option>
+    </select>
+  </div>
+  <div class="details-item">
+    <div class="details-label">存放位置：</div>
+    <span class="details-show details-content">{{ record['location'] }}</span>
+    <input class="details-hide details-form" type="text" name="location" value="{{ record['location'] }}" />
+  </div>
+  <div class="details-item">
+    <div class="details-label">合同文件：</div>
+    {% if record['contract_files'] %}
+    <ul class="details-show details-content">
+    {% for filename in record['contract_files'] %}
+    {% if filename != '' %}
+    <li><a href="{{ url_for('info.get_resource', id=record['id'], filename=filename) }}">{{ filename }}</a></li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+    {% else %}
+    <span class="details-show details-content">无</span>
+    {% endif %}
+    <div class="details-hide details-form">
+      <input type="button" name="add-file" value="添加附件" onclick="createInputFile('')"/>
+      <br>
+      <ul id="upload-contract-file">
+        {% if record['contract_files'] %}
+        {% for filename in record['contract_files'] %}
+        {% if filename != '' %}
+        <li id="upload-contract-file-item-{{ loop.index0 }}" class="upload-contract-file-item">
+          <span>{{ filename }}</span>
+          <input id="contract-filename-{{ loop.index0 }}" type="text" name="contract_filename_{{ loop.index0 }}" value="{{ filename }}" style="display: none;"/>
+          <input id="delete-contract-file-button-{{ loop.index0 }}" type="button" value="删除" onclick="deleteFile('{{ loop.index0 }}')"/>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  <div class="details-item">
+    <div class="details-label">照片：</div>
+    {% if record['photo'] %}
+    <ul class="details-show">
+    {% for photoname in record['photo'] %}
+    {% if photoname != '' %}
+    <li><a href="{{ url_for('info.get_resource', id=record['id'], filename=photoname) }}"><img src="{{ url_for('info.get_resource', id=record['id'], filename=photoname) }}" alt="{{ photoname }}"/></a></li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+    {% else %}
+    <span class="details-show details-content">无</span>
+    {% endif %}
+    <div class="details-hide details-form">
+      <input type="button" name="add-photo" value="添加附件" onclick="createInputPhoto()"/>
+      <br>
+      <ul id="upload-photo">
+        {% if record['photo'] %}
+        {% for photoname in record['photo'] %}
+        {% if photoname != '' %}
+        <li id="upload-photo-item-{{ loop.index0 }}" class="upload-photo-item">
+          <span>{{ photoname }}</span>
+          <input id="photoname-{{ loop.index0 }}" type="text" name="photoname_{{ loop.index0 }}" value="{{ photoname }}" style="display: none;"/>
+          <input id="delete-photo-button-{{ loop.index0 }}" type="button" value="删除" onclick="deletePhoto('{{ loop.index0 }}')"/>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  <div class="details-item">
+    <div class="details-label">位置照片：</div>
+    {% if record['location_photo'] %}
+    <ul class="details-show">
+    {% for location_photoname in record['location_photo'] %}
+    {% if location_photoname != '' %}
+    <li><a href="{{ url_for('info.get_resource', id=record['id'], filename=location_photoname) }}"><img src="{{ url_for('info.get_resource', id=record['id'], filename=location_photoname) }}" alt="{{ location_photoname }}"/></a></li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+    {% else %}
+    <span class="details-show details-content">无</span>
+    {% endif %}
+    <div class="details-hide details-form">
+      <input type="button" name="add-location-photo" value="添加附件" onclick="createInputLocationPhoto()"/>
+      <br>
+      <ul id="upload-location-photo">
+        {% if record['location_photo'] %}
+        {% for location_photoname in record['location_photo'] %}
+        {% if location_photoname != '' %}
+        <li id="upload-location-photo-item-{{ loop.index0 }}" class="upload-location-photo-item">
+          <span>{{ location_photoname }}</span>
+          <input id="location-photoname-{{ loop.index0 }}" type="text" name="location_photoname_{{ loop.index0 }}" value="{{ location_photoname }}" style="display: none;"/>
+          <input id="delete-location-photo-button-{{ loop.index0 }}" type="button" value="删除" onclick="deleteLocationPhoto('{{ loop.index0 }}')"/>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  <div class="details-item">
+    <div class="details-label">备注：</div>
+    <span class="details-show details-content">{{ record['comment'] }}</span>
+    <textarea class="details-hide details-form" name="comment">{{ record['comment'] }}</textarea>
+  </div>
+</form>
+<hr>
+<button class="details-show-button" onclick="displayDetailsForm()">编辑</button>
+<button class="details-show-button button-delete" onclick="confirmDelete(`{{ url_for('info.delete', id=record['id']) }}`)">删除</button>
+<button class="details-hide-button" onclick="hideDetailsForm()">取消</button>
+<button class="details-hide-button" onclick="submitDetailsForm()">提交</button>
+{% endblock %}
