@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}导入{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<h3>从 Excel 导入</h3>
+<a href="{{ url_for('static', filename='template.xlsx') }}">下载模板</a>
+<form id="import-excel-form" enctype="multipart/form-data" method="POST">
+  <input type="file" name="file" accept=".xls,.xlsx"/>
+  <button id="button-import-excel" onclick="submitImportExcel()" value="{{ url_for('info.import_excel') }}">提交</button>
+</form>
+
+<h3>单项导入</h3>
+<form id="import-one-form" enctype="multipart/form-data" method="POST">
+  <div class="import-one-item">
+    <div class="import-one-label">类型：</div>
+    <select id="import-one-type-select" class="import-one-form" name="type">
+      <option id="import-one-type-a" value="材料">材料</option>
+      <option id="import-one-type-b" value="设备">设备</option>
+    </select>
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">名称：</div>
+    <input class="import-one-form" type="text" name="name" value="" />
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">型号：</div>
+    <input class="import-one-form" type="text" name="model" value="" />
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">序列号：</div>
+    <input class="import-one-form" type="text" name="serial_number" value="" />
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">合同号：</div>
+    <input class="import-one-form" type="text" name="contract_number" value="" />
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">到货日期：</div>
+    <input class="import-one-form" type="date" name="arrival_date" value="" />
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">经办人：</div>
+    <input class="import-one-form" type="text" name="transactor" value="" />
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">状态：</div>
+    <select class="import-one-form" name="status">
+      <option id="import-one-status-a" value="在用">在用</option>
+      <option id="import-one-status-b" value="待用">待用</option>
+      <option id="import-one-status-c" value="被借">被借</option>
+      <option id="import-one-status-d" value="待维修">待维修</option>
+      <option id="import-one-status-e" value="维修中">维修中</option>
+    </select>
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">存放位置：</div>
+    <input class="import-one-hide import-one-form" type="text" name="location" value="" />
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">合同文件：</div>
+    <div class="import-one-form">
+      <input type="button" name="add-file" value="添加附件" onclick="createInputFile('')"/>
+      <br>
+      <ul id="upload-contract-file"></ul>
+    </div>
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">照片：</div>
+    <div class="import-one-form">
+      <input type="button" name="add-photo" value="添加附件" onclick="createInputPhoto()"/>
+      <br>
+      <ul id="upload-photo"></ul>
+    </div>
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">位置照片：</div>
+    <div class="import-one-form">
+      <input type="button" name="add-location-photo" value="添加附件" onclick="createInputLocationPhoto()"/>
+      <br>
+      <ul id="upload-location-photo"></ul>
+    </div>
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">说明书：</div>
+    <div class="import-one-form">
+      <input type="button" name="add-manual" value="添加附件" onclick="createInputManual()"/>
+      <br>
+      <ul id="upload-manual"></ul>
+    </div>
+  </div>
+  <div class="import-one-item">
+    <div class="import-one-label">备注：</div>
+    <textarea class="import-one-form" name="comment"></textarea>
+  </div>
+  <button id="button-import-one" onclick="submitImportOne()" value="{{ url_for('info.import_one') }}">提交</button>
+</form>
+{% endblock %}

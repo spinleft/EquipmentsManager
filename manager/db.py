@@ -8,14 +8,13 @@ from flask.cli import with_appcontext
 def get_db():
     if 'db' not in g:
         g.db = pymysql.connect(
-            host="172.16.60.97",
+            host="192.168.0.178",
             user="fermi",
             password = "fermi123456",
             database="equipment",
             charset="utf8",
             cursorclass = pymysql.cursors.DictCursor
         )
-
     return g.db
 
 

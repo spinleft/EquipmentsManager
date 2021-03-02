@@ -208,9 +208,23 @@ hr {
     min-height: 32px;
 }
 
+.import-one-item {
+    display: flex;
+    min-height: 32px;
+}
+
 .details-label {
     display: block;
     width: 128px;
+    height: 32px;
+    text-align: right;
+    font-size: 16px;
+    line-height: 32px;
+}
+
+.import-one-label {
+    display: block;
+    width: 96px;
     height: 32px;
     text-align: right;
     font-size: 16px;
@@ -229,6 +243,14 @@ hr {
     font-size: 16px;
     height: fit-content;
     display: none;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.import-one-form {
+    font-size: 16px;
+    height: fit-content;
+    display: block;
     margin-top: auto;
     margin-bottom: auto;
 }

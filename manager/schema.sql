@@ -22,6 +22,7 @@ CREATE TABLE `information` (
     `contract_files` TEXT,
     `photo` TEXT,
     `location_photo` TEXT,
+    `manual` TEXT,
     `comment` TEXT,
     UNIQUE (`name`, `model`, `serial_number`)
 );
@@ -30,10 +31,4 @@ CREATE VIEW `amount_count`(`type`, `name`, `model`, `amount`) AS
 SELECT `type`, `name`, `model`, COUNT(*)
 FROM `information`
 GROUP BY `type`, `name`, `model`;
-
-INSERT INTO `information`(`type`, `name`, `model`, `serial_number`, `contract_number`, `arrival_date`, `transactor`, `status`, `location`, `contract_files`, `photo`, `location_photo`, `comment`)
-VALUES('设备', '激光器', '1型', 'cx123', '11245134', '2018-02-03', '陈思源', '在用', '1号台', '', '', '', '');
-
-INSERT INTO `information`(`type`, `name`, `model`, `serial_number`, `contract_number`, `arrival_date`, `transactor`, `status`, `location`, `contract_files`, `photo`, `location_photo`, `comment`)
-VALUES('材料', '探头', 'A型', 'pb234', '265463', '2018-09-11', '陈思源', '在用', '1号台', '', '', '', '');
 

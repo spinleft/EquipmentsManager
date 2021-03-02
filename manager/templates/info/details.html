@@ -16,7 +16,7 @@
   </div>
   <div class="details-item">
     <div class="details-label">名称：</div>
-    <span class="details-show details-content" display="block">{{ record['name'] }}</span>
+    <span class="details-show details-content">{{ record['name'] }}</span>
     <input class="details-hide details-form" type="text" name="name" value="{{ record['name'] }}" />
   </div>
   <div class="details-item">
@@ -74,7 +74,7 @@
     <span class="details-show details-content">无</span>
     {% endif %}
     <div class="details-hide details-form">
-      <input type="button" name="add-file" value="添加附件" onclick="createInputFile('')"/>
+      <input type="button" name="add-file" value="添加附件" onclick="createInputFile()"/>
       <br>
       <ul id="upload-contract-file">
         {% if record['contract_files'] %}
@@ -146,6 +146,37 @@
           <span>{{ location_photoname }}</span>
           <input id="location-photoname-{{ loop.index0 }}" type="text" name="location_photoname_{{ loop.index0 }}" value="{{ location_photoname }}" style="display: none;"/>
           <input id="delete-location-photo-button-{{ loop.index0 }}" type="button" value="删除" onclick="deleteLocationPhoto('{{ loop.index0 }}')"/>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  <div class="details-item">
+    <div class="details-label">说明书：</div>
+    {% if record['manual'] %}
+    <ul class="details-show details-content">
+    {% for filename in record['manual'] %}
+    {% if filename != '' %}
+    <li><a href="{{ url_for('info.get_resource', id=record['id'], filename=filename) }}">{{ filename }}</a></li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+    {% else %}
+    <span class="details-show details-content">无</span>
+    {% endif %}
+    <div class="details-hide details-form">
+      <input type="button" name="add-manual" value="添加附件" onclick="createInputManual()"/>
+      <br>
+      <ul id="upload-manual">
+        {% if record['manual'] %}
+        {% for filename in record['manual'] %}
+        {% if filename != '' %}
+        <li id="upload-manual-item-{{ loop.index0 }}" class="upload-manual-item">
+          <span>{{ filename }}</span>
+          <input id="manualname-{{ loop.index0 }}" type="text" name="manualname_{{ loop.index0 }}" value="{{ filename }}" style="display: none;"/>
+          <input id="delete-manual-button-{{ loop.index0 }}" type="button" value="删除" onclick="deleteManual('{{ loop.index0 }}')"/>
         </li>
         {% endif %}
         {% endfor %}

@@ -358,6 +358,95 @@ function sortLocationPhotoItems() {
     return;
 }
 
+function createInputManual() {
+    var index = document.getElementsByClassName("upload-manual-item").length;
+    var newInputFile = document.createElement("input");
+    newInputFile.id = "manual-" + index.toString();
+    newInputFile.name = "manual_" + index.toString();
+    newInputFile.type = "file";
+    newInputFile.size = "50";
+    newInputFile.style.display = "none";
+    var func = function(obj) {
+        return function() {
+            addInputManual(obj);
+        };
+    };
+    newInputFile.addEventListener("change", func(newInputFile));
+    newInputFile.click();
+    return false;
+}
+
+function addInputManual(newInputFile) {
+    var index = document.getElementsByClassName("upload-manual-item").length;
+    var filepath = newInputFile.value.split('\\');
+    var filename = filepath[filepath.length - 1];
+    var newItem = document.createElement("li");
+    newItem.id = "upload-manual-item-" + index.toString();
+    newItem.className = "upload-manual-item";
+    var newSpan = document.createElement("span");
+    newSpan.innerHTML = filename;
+    var newInputText = document.createElement("input");
+    newInputText.id = "manualname-" + index.toString();
+    newInputText.type = "text";
+    newInputText.name = "manualname_" + index.toString();
+    newInputText.value = filename;
+    newInputText.style.display = "none";
+    var newInputButton = document.createElement("input");
+    newInputButton.type = "button";
+    newInputButton.value = "删除";
+    var func = function(index) {
+        return function() {
+            deleteManual(index);
+        };
+    };
+    newInputButton.addEventListener("click", func(index.toString()));
+    newItem.appendChild(newSpan);
+    newItem.appendChild(newInputText);
+    newItem.appendChild(newInputFile);
+    newItem.appendChild(newInputButton);
+    document.getElementById("upload-manual").appendChild(newItem);
+    return;
+}
+
+function deleteManual(index) {
+    var itemId = "upload-manual-item-" + index.toString();
+    var ulNode = document.getElementById("upload-manual");
+    var liNode = document.getElementById(itemId);
+    ulNode.removeChild(liNode);
+    sortManualItems();
+    return;
+}
+
+function sortManualItems() {
+    var liItems = document.getElementsByClassName("upload-manual-item");
+    var func = function(index) {
+        return function() {
+            deleteManual(index);
+        };
+    };
+    for (var i = 0; i < liItems.length; i++) {
+        var oldId = liItems[i].id.split('-');
+        var oldIndex = oldId[oldId.length - 1];
+        liItems[i].id = "upload-manual-item-" + i.toString();
+        var manualname = document.getElementById("manualname-" + oldIndex);
+        manualname.id = "manualname-" + i.toString();
+        manualname.name = "manualname_" + i.toString();
+        var manual = document.getElementById("manual-" + oldIndex);
+        if (manual) {
+            manual.id = "manual-" + i.toString();
+            manual.name = "manual_" + i.toString();
+        }
+        var deleteButton = document.getElementById("delete-manual-button-" + oldIndex)
+        liItems[i].removeChild(deleteButton);
+        var newInputButton = document.createElement("input");
+        newInputButton.type = "button";
+        newInputButton.value = "删除";
+        newInputButton.addEventListener("click", func(i.toString()));
+        liItems[i].appendChild(newInputButton);
+    }
+    return;
+}
+
 function submitDetailsForm() {
     var detailsForm = document.getElementById("details");
     detailsForm.submit();
@@ -450,6 +539,18 @@ function sortRows(col) {
     var rowArray = new Array();
     for (var i = 0; i < oldRows.length; i++) {
         rowArray[i] = oldRows[i];
+        for (var j = 0; j < rowArray[i].cells.length; j++) {
+            if (rowArray[i].cells[j] === null) {
+                rowArray[i].insertCell(j);
+                rowArray[i].cells[j].appendChild(document.createTextNode(""));
+                rowArray[i].cells[j].firstChild.nodeValue = "";
+            } else if (rowArray[i].cells[j].firstChild === null) {
+                rowArray[i].cells[j].appendChild(document.createTextNode(""));
+                rowArray[i].cells[j].firstChild.nodeValue = "";
+            } else if (rowArray[i].cells[j].firstChild.nodeValue === null) {
+                rowArray[i].cells[j].firstChild.nodeValue = "";
+            }
+        }
     }
     if (oldTable.sortCol == col) {
         rowArray.reverse();
@@ -467,5 +568,21 @@ function sortRows(col) {
     }
     oldBody.appendChild(newFragment);
     oldTable.sortCol = col;
+    return;
+}
+
+function submitImportExcel(url) {
+    var url = document.getElementById("button-import-excel").value;
+    var importExcelForm = document.getElementById("import-excel-form");
+    importExcelForm.action = url;
+    importExcelForm.submit();
+    return;
+}
+
+function submitImportOne(url) {
+    var url = document.getElementById("button-import-one").value;
+    var importOneForm = document.getElementById("import-one-form");
+    importOneForm.action = url;
+    importOneForm.submit();
     return;
 }
